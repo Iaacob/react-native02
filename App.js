@@ -1,24 +1,85 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Button, Platform, Text, Vibration, View, SafeAreaView, StyleSheet } from "react-native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <h1>VIBRADOR PORTATIL</h1>
-      <Text>toca el boton para vibrar</Text>
-      <Button 
-        title=" ON "         
-        color="#f194ff"/>
-      <StatusBar style="auto" />
-    </View>
-  );
+const Separator = () => {
+  return <View style={Platform.OS === "android" ? styles.separator : null} />;
 }
 
+const App = () => {
+
+  const ONE_SECOND_IN_MS = 1000;
+
+  const PATTERN = [
+    1 * ONE_SECOND_IN_MS,
+    2 * ONE_SECOND_IN_MS,
+    3 * ONE_SECOND_IN_MS
+  ];
+
+  const PATTERN_DESC =
+    Platform.OS === "android"
+      ? "wait 1s, vibrate 2s, wait 3s"
+      : "wait 1s, vibrate, wait 2s, vibrate, wait 3s";
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text style={[styles.header, styles.paragraph]}>TERREMOTO TERREMOTO</Text>
+      <View>
+        <Button title="Vibrar una vez" onPress={() => Vibration.vibrate()} />
+      </View>
+      <Separator />
+      {Platform.OS == "android"
+        ? [
+            <View>
+              <Button
+                title="Vibrar 5 segundos"
+                onPress={() => Vibration.vibrate(5 * ONE_SECOND_IN_MS)}
+              />
+            </View>,
+            <Separator />
+          ]
+        : null}
+      <Text style={styles.paragraph}>Pattern: {PATTERN_DESC}</Text>
+      <Button
+        title="Vibrate with pattern"
+        onPress={() => Vibration.vibrate(PATTERN)}
+      />
+      <Separator />
+      <Button
+        title="Vibrate with pattern until cancelled"
+        onPress={() => Vibration.vibrate(PATTERN, true)}
+      />
+      <Separator />
+      <Button
+        title="Stop vibration pattern"
+        onPress={() => Vibration.cancel()}
+        color="#FF0000"
+      />
+    </SafeAreaView>
+  );
+}
+export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    paddingTop: 44,
+    padding: 8
+  },
+  button: {
+    color: "#f194ff"
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: "#737373",
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  paragraph: {
+    margin: 24,
+    textAlign: "center"
   },
 });
