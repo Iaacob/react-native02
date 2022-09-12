@@ -17,7 +17,7 @@ const App = () => {
 
   const PATTERN_DESC =
     Platform.OS === "android"
-      ? "wait 1s, vibrate 2s, wait 3s"
+      ? "esperar 1s, vibrar 1s, esperar 1s"
       : "wait 1s, vibrate, wait 2s, vibrate, wait 3s";
 
   return (
@@ -31,33 +31,29 @@ const App = () => {
         ? [
             <View>
               <Button
-                title="Vibrar 5 segundos"
-                onPress={() => Vibration.vibrate(5 * ONE_SECOND_IN_MS)}
+                title="Vibrar 3 segundos"
+                onPress={() => Vibration.vibrate(3 * ONE_SECOND_IN_MS)}
               />
             </View>,
+            
             <Separator />
           ]
         : null}
-      <Text style={styles.paragraph}>Pattern: {PATTERN_DESC}</Text>
+      <Text style={styles.paragraph}>Patron: {PATTERN_DESC}</Text>
       <Button
-        title="Vibrate with pattern"
-        onPress={() => Vibration.vibrate(PATTERN)}
-      />
-      <Separator />
-      <Button
-        title="Vibrate with pattern until cancelled"
+        title="Vibrar intercalado"
         onPress={() => Vibration.vibrate(PATTERN, true)}
       />
       <Separator />
       <Button
-        title="Stop vibration pattern"
+        title="Frenar la vibracion intercalada"
         onPress={() => Vibration.cancel()}
         color="#FF0000"
       />
     </SafeAreaView>
   );
 }
-export default App;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -83,3 +79,5 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 });
+
+export default App;
